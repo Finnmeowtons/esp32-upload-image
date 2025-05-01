@@ -74,7 +74,7 @@ httpd_handle_t server = NULL;
 PubSubClient mqttClient(client);
 
 
-bool streaming_enabled = false;
+bool streaming_enabled = true;
 
 //________________________________________________________________________________ sendPhotoToServer()
 void sendPhotoToServer() {
