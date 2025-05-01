@@ -3,6 +3,7 @@
 #include <HTTPClient.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
+#include <WiFiManager.h>
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
 #include "esp_camera.h"
@@ -77,6 +78,7 @@ bool streaming_enabled = false;
 
 //________________________________________________________________________________ sendPhotoToServer()
 void sendPhotoToServer() {
+  
   String AllData;
   String DataBody;
 
@@ -251,17 +253,29 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
 
+  // Initialize WiFi using WiFiManager
+  WiFiManager wifiManager;
+  
+  // Uncomment to reset saved credentials (for testing)
+  // wifiManager.resetSettings();
+
+if (!wifiManager.autoConnect("ESP32-CAM-AP")) {
+    Serial.println("Failed to connect and hit timeout");
+    ESP.restart();
+    delay(1000);
+  }
+
   pinMode(FLASH_LED_PIN, OUTPUT);
 
   // Setting the ESP32 WiFi to station mode.
-  WiFi.mode(WIFI_STA);
+  // WiFi.mode(WIFI_STA);
   Serial.println();
 
   //---------------------------------------- The process of connecting ESP32 CAM with WiFi Hotspot / WiFi Router.
   Serial.println();
   Serial.print("Connecting to : ");
   Serial.println(ssid);
-  WiFi.begin(ssid, password);
+  // WiFi.begin(ssid, password);
 
   // The process timeout of connecting ESP32 CAM with WiFi Hotspot / WiFi Router is 20 seconds.
   // If within 20 seconds the ESP32 CAM has not been successfully connected to WiFi, the ESP32 CAM will restart.
