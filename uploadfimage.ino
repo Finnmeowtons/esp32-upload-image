@@ -53,7 +53,7 @@ const int Interval = 60000;  //--> Photo capture every 60 seconds.
 // Server Address or Server IP.
 String serverName = "157.245.204.46";  //--> Change with your server computer's IP address or your Domain name.
 // The file path "upload_img.php" on the server folder.
-String serverPath = "/upload?device=device4";
+String serverPath = "/upload?device=device4"; //TODO Change Device Number
 // Server Port.
 const int serverPort = 3000;
 
@@ -118,7 +118,7 @@ void sendPhotoToServer() {
   if (client.connect(serverName.c_str(), serverPort)) {
     Serial.println("Connection successful!");
 
-    String post_data = "--dataMarker\r\nContent-Disposition: form-data; name=\"imageFile\"; filename=\"ESP32CAMDevice4.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n";
+    String post_data = "--dataMarker\r\nContent-Disposition: form-data; name=\"imageFile\"; filename=\"ESP32CAMDevice4.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n"; //TODO Change Device Number
     String boundary = "\r\n--dataMarker--\r\n";
 
     uint32_t totalLen = fb->len + post_data.length() + boundary.length();
@@ -235,7 +235,7 @@ static esp_err_t stream_handler(httpd_req_t *req) {
 void sendIpAddress() {
   http.begin("http://157.245.204.46:3001/api/register-ip");
   http.addHeader("Content-Type", "application/json");
-  String json = "{\"device_id\": \"device4\", \"ip\": \"" + WiFi.localIP().toString() + "\"}";
+  String json = "{\"device_id\": \"device4\", \"ip\": \"" + WiFi.localIP().toString() + "\"}"; //TODO Change Device Number
 
   Serial.println(json);
   http.POST(json);
@@ -259,7 +259,7 @@ void setup() {
   // Uncomment to reset saved credentials (for testing)
   // wifiManager.resetSettings();
 
-if (!wifiManager.autoConnect("ESP32-CAM-AP")) {
+if (!wifiManager.autoConnect("ESP32-CAM-AP-DEVICE4")) { //TODO Change Device Number
     Serial.println("Failed to connect and hit timeout");
     ESP.restart();
     delay(1000);
@@ -421,9 +421,9 @@ if (!client.connected()) {
 void reconnect() {
   while (!mqttClient.connected()) {
     Serial.print("Connecting to MQTT...");
-    if (mqttClient.connect("ESP32CAM_device4")) {
+    if (mqttClient.connect("ESP32CAM_device4")) { //TODO Change Device Number
       Serial.println("✅ Connected!");
-      mqttClient.subscribe("camera/device4/stream");
+      mqttClient.subscribe("camera/device4/stream"); //TODO Change Device Number
     } else {
       Serial.print("❌ Failed, rc=");
       Serial.print(mqttClient.state());
@@ -442,7 +442,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Topic: ");
   Serial.println(topic);
 
-  if (strcmp(topic, "camera/device4/stream") == 0) {
+  if (strcmp(topic, "camera/device4/stream") == 0) { //TODO Change Device Number
     StaticJsonDocument<64> doc;
     DeserializationError error = deserializeJson(doc, payload, length);
     if (error) return;
